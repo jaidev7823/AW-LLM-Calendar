@@ -4,9 +4,7 @@
 
 Keep your productivity logs private and automated—no cloud AI services needed.
 
----
-<img src="/assets/Before integrating tool.png" width="70" />
----
+<img src="/assets/Before integrating tool.png" width="200" />
 
 ## ✨ Features
 
@@ -82,10 +80,10 @@ You can set this up as a cron job or a scheduled task to run automatically every
 
 ## 🛠 Roadmap
 
--   [*] **Hourly Summaries**: Roll up hourly logs into insightful daily or weekly reports with productivity scoring.
--   [*] **Update on Google Calender**: summarize and update on google calender.
--   [ ] **Automation**: Automatically updating google calender on hourly basis
--   [ ] **Daily summarization**: based on calender data summarize daily.
+-   [x] **Hourly Summaries**: Roll up hourly logs into insightful daily or weekly reports with productivity scoring.
+-   [x] **Update on Google Calendar**: summarize and update on google calendar.
+-   [ ] **Automation**: Automatically updating google calendar on hourly basis
+-   [ ] **Daily summarization**: based on calendar data summarize daily.
 -   [ ] **Goal Integration**: Compare planned tasks (e.g., from a to-do list) with actual tracked activity.
 -   [ ] **Productivity Tracker**: Track how much task was done and how is left how time got wasted how much work is done
 -   [ ] **Smarter Categorization**: Automatically classify activities as "Work," "Leisure," or "Neutral."
