@@ -1,3 +1,4 @@
+import sys
 import requests
 import datetime
 from collections import defaultdict, Counter
@@ -5,8 +6,8 @@ import os.path
 import pickle
 from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
-import datetime
 from zoneinfo import ZoneInfo
+
 
 # ---------------- CONFIG ----------------
 ACTIVITYWATCH_URL = "http://localhost:5600/api/0/buckets/aw-watcher-window_DESKTOP-9R9SJ3O/events"
@@ -140,26 +141,35 @@ def summarize_events(events, other_threshold=0.05):
     return event_title, event_description
 
 # ---------------- MAIN ----------------
-def main():
+def process_hours(back_hours=1):
     LOCAL_TZ = ZoneInfo("Asia/Kolkata")
-
-    # Current time
     now = datetime.datetime.now(LOCAL_TZ)
 
-    # Last completed hour
-    hour_end = now.replace(minute=0, second=0, microsecond=0)
-    hour_start = hour_end - datetime.timedelta(hours=1)
+    for i in range(back_hours):
+        # Compute the hour interval
+        hour_end = now.replace(minute=0, second=0, microsecond=0) - datetime.timedelta(hours=i)
+        hour_start = hour_end - datetime.timedelta(hours=1)
 
-    # Pull events between [hour_start, hour_end)
-    events = get_aw_events(hour_start, hour_end)
-    event_title, event_description = summarize_events(events)
+        print(f"Processing {hour_start} → {hour_end} ...")
 
-    add_calendar_event(
-        summary=event_title,
-        description=event_description,
-        start_time=hour_start,
-        end_time=hour_end,
-    )
+        events = get_aw_events(hour_start, hour_end)
+        event_title, event_description = summarize_events(events)
+
+        add_calendar_event(
+            summary=event_title,
+            description=event_description,
+            start_time=hour_start,
+            end_time=hour_end,
+        )
+        print(f"✅ Hour {hour_start} → {hour_end} updated.\n")
 
 if __name__ == "__main__":
-    main()
+    # Default: last 1 hour
+    back_hours = 1
+    if len(sys.argv) > 1:
+        try:
+            back_hours = int(sys.argv[1])
+        except ValueError:
+            print("Invalid argument, using default: 1 hour")
+
+    process_hours(back_hours)
